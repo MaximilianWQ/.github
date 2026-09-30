@@ -1,16 +1,14 @@
-// Token contract — aesthetic: PLATINUM COCKPIT.
-// Cool graphite quiet-luxury with exactly ONE warm note (champagne-gold).
-// Dark is the primary mode; the light mode is a porcelain counterpart on the
-// same hue axis, not an inversion.
+// Token contract — aesthetic: LIQUID GLASS (see below).
+// Dark is the primary mode; the light mode is frosted glass over a pastel
+// aurora on the same hue axes, not an inversion.
 //
 // Values are authored in OKLCH and emitted as hex. SVG rendered inside an <img>
 // has no CSS custom-property cascade to rely on and no @supports fallback path,
 // so the conversion happens here at build time and the SVG receives literal
 // colours. The OKLCH source values stay in the comments as the real contract.
 //
-// Non-negotiables carried from PLAYBOOK §3.2: never pure #000 or #fff; neutrals
-// keep a small chroma so they do not read as dead grey; ONE accent under ~10%
-// of surface area.
+// Never pure #000 for the canvas; neutrals keep a small blue chroma so they do
+// not read as dead grey.
 
 /** OKLCH → sRGB hex. Standard OKLab matrices, gamut-clipped per channel. */
 export function oklch(l, c, hDeg) {
@@ -41,86 +39,100 @@ export function oklch(l, c, hDeg) {
   return `#${encode(rLin)}${encode(gLin)}${encode(bLin)}`;
 }
 
-// The cool graphite neutral axis and the single warm accent hue.
-const H_GRAPHITE = 286;
-const H_GOLD = 79;
+// Aesthetic: LIQUID GLASS.
+// A deep ink canvas lit from behind by a soft aurora (ice cyan → electric blue
+// → violet). Every surface is a translucent glass slab: a faint white body, a
+// specular rim that is bright on top and fades down, and a hairline highlight
+// along the upper edge. Accents are cool and luminous — no warm notes.
+const H_INK = 262;
+const H_ICE = 212;
+const H_BLUE = 255;
+const H_VIOLET = 295;
 
 export const DARK = {
   name: "dark",
 
-  // Canvas + surface ramp. The surface↔bg gap is deliberately ~5% OKLCH L:
-  // the recipe records that a ~3.3% gap read flat and pasted-on at real screen
-  // brightness and cost a redeploy.
-  bg: oklch(0.146, 0.004, H_GRAPHITE),
-  surface1: oklch(0.198, 0.01, H_GRAPHITE),
-  surface2: oklch(0.234, 0.013, H_GRAPHITE),
-  surface3: oklch(0.272, 0.015, H_GRAPHITE),
+  bg: oklch(0.155, 0.022, H_INK),
+  surface1: oklch(0.205, 0.028, H_INK),
+  surface2: oklch(0.245, 0.032, H_INK),
+  surface3: oklch(0.3, 0.036, H_INK),
 
-  // Text ramp — never pure white, which halos against near-black.
-  text: oklch(0.949, 0.005, 275),
-  text2: oklch(0.842, 0.013, 267),
-  text3: oklch(0.691, 0.012, 280),
-  text4: oklch(0.488, 0.014, 281),
+  text: oklch(0.965, 0.008, H_BLUE),
+  text2: oklch(0.87, 0.02, H_BLUE),
+  text3: oklch(0.72, 0.025, H_BLUE),
+  text4: oklch(0.54, 0.03, H_BLUE),
 
-  accent: oklch(0.791, 0.087, H_GOLD),
-  accentDim: oklch(0.62, 0.07, H_GOLD),
-  onAccent: oklch(0.22, 0.03, 70),
+  accent: oklch(0.86, 0.12, H_ICE),
+  accentDim: oklch(0.64, 0.19, H_BLUE),
+  accent3: oklch(0.66, 0.2, H_VIOLET),
+  onAccent: oklch(0.2, 0.03, H_INK),
 
-  // Hairlines and the inset top light-lift are the depth recipe. SVG has no
-  // inset box-shadow, so the lift is drawn as an explicit 1px light line along
-  // the top edge of each card.
   line: "#ffffff",
-  lineOpacity: 0.11,
-  lineSoftOpacity: 0.06,
-  liftOpacity: 0.07,
+  lineOpacity: 0.12,
+  lineSoftOpacity: 0.07,
+  liftOpacity: 0.1,
 
-  // Metal gradient stops for the signature clipped-metal wordmark.
-  metal: ["#6e7078", "#b4b8c2", "#f2f4f8", "#c7cbd4", "#8f939c", "#e6e9ef", "#a7abb4"],
+  // Aurora blobs behind the glass: [colour, opacity].
+  aurora: [
+    [oklch(0.72, 0.15, H_ICE), 0.28],
+    [oklch(0.58, 0.22, H_BLUE), 0.3],
+    [oklch(0.58, 0.22, H_VIOLET), 0.24],
+  ],
+  // Glass body (top → bottom alpha of white) and specular rim.
+  glass: [0.085, 0.025],
+  rim: [0.42, 0.08],
+  specular: 0.75,
+
+  // Polished chrome with a faint iridescent cast.
+  metal: ["#8fa3c7", "#dce8ff", "#ffffff", "#b3d4ff", "#8e9dff", "#e6dcff", "#a9bde0"],
   sheen: "#ffffff",
-  sheenOpacity: 0.5,
+  sheenOpacity: 0.6,
 
-  ok: oklch(0.726, 0.135, 161),
+  ok: oklch(0.8, 0.14, 170),
   grid: "#ffffff",
-  gridOpacity: 0.05,
+  gridOpacity: 0.06,
 };
 
 export const LIGHT = {
   name: "light",
 
-  // Porcelain rather than white: the same cool hue axis walked to high L, so
-  // the light mode reads as the same product under different light.
-  bg: oklch(0.965, 0.003, H_GRAPHITE),
-  surface1: oklch(0.993, 0.002, H_GRAPHITE),
-  surface2: oklch(0.945, 0.004, H_GRAPHITE),
-  surface3: oklch(0.91, 0.006, H_GRAPHITE),
+  bg: oklch(0.972, 0.008, H_BLUE),
+  surface1: oklch(0.99, 0.004, H_BLUE),
+  surface2: oklch(0.94, 0.012, H_BLUE),
+  surface3: oklch(0.9, 0.018, H_BLUE),
 
-  text: oklch(0.24, 0.012, H_GRAPHITE),
-  text2: oklch(0.4, 0.012, H_GRAPHITE),
-  text3: oklch(0.55, 0.011, H_GRAPHITE),
-  text4: oklch(0.68, 0.009, H_GRAPHITE),
+  text: oklch(0.22, 0.03, H_INK),
+  text2: oklch(0.36, 0.03, H_INK),
+  text3: oklch(0.5, 0.03, H_INK),
+  text4: oklch(0.63, 0.025, H_INK),
 
-  // The gold must darken on porcelain or it drops below readable contrast —
-  // the same hue, walked down in lightness and up slightly in chroma.
-  accent: oklch(0.62, 0.098, H_GOLD),
-  accentDim: oklch(0.74, 0.085, H_GOLD),
-  onAccent: oklch(0.98, 0.01, 80),
+  accent: oklch(0.56, 0.19, H_BLUE),
+  accentDim: oklch(0.66, 0.14, H_ICE),
+  accent3: oklch(0.58, 0.2, H_VIOLET),
+  onAccent: oklch(0.98, 0.01, H_BLUE),
 
-  // On light, hairlines are dark ink at low alpha and the "lift" inverts into a
-  // soft bottom shadow line rather than a top highlight.
-  line: "#0a0a0c",
-  lineOpacity: 0.14,
-  lineSoftOpacity: 0.07,
+  line: "#0a1024",
+  lineOpacity: 0.1,
+  lineSoftOpacity: 0.06,
   liftOpacity: 0.05,
 
-  // Engraved graphite rather than bright platinum: a light-on-light metal
-  // gradient would vanish, so the wordmark inverts to dark polished steel.
-  metal: ["#8d919b", "#3a3c44", "#1b1c21", "#4a4d56", "#22242a", "#5e626c", "#2c2e35"],
-  sheen: "#ffffff",
-  sheenOpacity: 0.42,
+  aurora: [
+    [oklch(0.82, 0.11, H_ICE), 0.55],
+    [oklch(0.74, 0.14, H_BLUE), 0.4],
+    [oklch(0.78, 0.13, H_VIOLET), 0.35],
+  ],
+  glass: [0.75, 0.42],
+  rim: [1, 0.35],
+  specular: 1,
 
-  ok: oklch(0.58, 0.135, 161),
-  grid: "#0a0a0c",
-  gridOpacity: 0.06,
+  // Deep blue-black chrome: bright metal would vanish on the light canvas.
+  metal: ["#3d4f78", "#121a2e", "#0a0f1e", "#2b3f72", "#141c33", "#3a3f82", "#1b2440"],
+  sheen: "#ffffff",
+  sheenOpacity: 0.5,
+
+  ok: oklch(0.6, 0.14, 170),
+  grid: "#0a1024",
+  gridOpacity: 0.07,
 };
 
 export const THEMES = [DARK, LIGHT];

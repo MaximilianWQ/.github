@@ -31,6 +31,8 @@ import {
   nextId,
   resetIds,
   animGroup,
+  pill,
+  accentFill,
 } from "./lib/svg.mjs";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -150,14 +152,14 @@ function renderBanner(t) {
   const readouts = [
     { value: num(data.totals.repos), label: plural(data.totals.repos, "repo") },
     { value: num(activeRepos), label: "активны за 30 дней" },
-    { value: num(data.totals.commits30), label: `${plural(data.totals.commits30, "commit")} / 30 дней` },
+    { value: num(data.totals.languages), label: "языков в стеке" },
     { value: relTime(data.totals.lastPush, NOW), label: "последняя активность" },
   ];
 
   const colW = CONTENT_W / readouts.length;
   readouts.forEach((r, i) => {
     const x = INSET + i * colW;
-    body.push(tick(t, x, STRIP_Y + 20, 14, i === 0 ? t.accent : alpha(t.accent, 0.45)));
+    body.push(tick(t, x, STRIP_Y + 20, 14, i === 0 ? null : alpha(t.accent, 0.45)));
     body.push(
       text(t, {
         x: x + 12,
@@ -242,29 +244,11 @@ function renderRepos(t) {
       })
     );
 
-    // 30-day volume badge, right-aligned to the card's inner edge.
-    g.push(
-      text(t, {
-        x: cx + CARD_W - 18,
-        y: cy + 31,
-        content: num(repo.commits30),
-        size: 16,
-        weight: 700,
-        fill: repo.commits30 > 0 ? t.accent : t.text4,
-        anchor: "end",
-        mono: true,
-      })
-    );
-    g.push(
-      capsLabel(t, {
-        x: cx + CARD_W - 18,
-        y: cy + 44,
-        content: "ком / 30 дн",
-        size: 8.5,
-        anchor: "end",
-        fill: t.text4,
-      })
-    );
+    // Status pill instead of a commit count: the page shows that work is
+    // happening, not how much of it.
+    if (repo.commits30 > 0) {
+      g.push(pill(t, { x: cx + CARD_W - 18, y: cy + 17, label: "активен" }));
+    }
 
     // Description, two lines maximum. Several repositories carry no GitHub
     // description; falling back to the newest commit subject fills the card
@@ -342,7 +326,7 @@ function renderRepos(t) {
         }
         const bh = Math.max(3, (v / peak) * chartH);
         return `<rect x="${bx.toFixed(1)}" y="${(baseY - bh).toFixed(1)}" width="${barW.toFixed(1)}" ` +
-          `height="${bh.toFixed(1)}" rx="1.5" fill="${t.accent}" opacity="0.8"/>`;
+          `height="${bh.toFixed(1)}" rx="1.5" fill="${accentFill(t)}" opacity="0.9"/>`;
       })
       .join("");
 
@@ -482,13 +466,12 @@ function renderPulse(t) {
   const defs = [shell.defs];
   const body = [shell.body];
 
-  const total = weeks.reduce((n, w) => n + w.count, 0);
   body.push(
     sectionHead(t, {
       x: INSET,
       y: HEAD_Y,
       title: "пульс разработки",
-      note: `${data.windowWeeks} недель · ${num(total)} ${plural(total, "commit")}`,
+      note: "активность по неделям",
     })
   );
 
@@ -509,9 +492,6 @@ function renderPulse(t) {
   body.push(
     `<path d="M${INSET} ${BASE_Y} H${INSET + CONTENT_W}" stroke="${alpha(t.line, t.lineOpacity)}" stroke-width="1"/>`
   );
-  body.push(
-    capsLabel(t, { x: INSET, y: BASE_Y - CHART_H + 4, content: `${peak}`, size: 9, fill: t.text4 })
-  );
 
   weeks.forEach((week, i) => {
     const x = INSET + i * (BAR_W + GAP);
@@ -527,8 +507,8 @@ function renderPulse(t) {
     const gradId = nextId("barfill");
     defs.push(
       `<linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
-         <stop offset="0%" stop-color="${isPeak ? t.accent : t.surface3}"/>
-         <stop offset="100%" stop-color="${isPeak ? t.accentDim : t.surface2}"/>
+         <stop offset="0%" stop-color="${isPeak ? t.accent : empty ? t.surface3 : t.accentDim}" stop-opacity="${isPeak ? 1 : empty ? 1 : 0.55}"/>
+         <stop offset="100%" stop-color="${isPeak ? t.accentDim : empty ? t.surface2 : t.accent3}" stop-opacity="${isPeak ? 0.9 : empty ? 1 : 0.22}"/>
        </linearGradient>`
     );
 
@@ -542,23 +522,6 @@ function renderPulse(t) {
       body.push(
         `<path d="M${(x + 4).toFixed(1)} ${(y + 1).toFixed(1)} H${(x + BAR_W - 4).toFixed(1)}" ` +
           `stroke="${alpha(t.line, t.liftOpacity * 2.2)}" stroke-width="1"/>`
-      );
-    }
-
-    // Value above the peak only — labelling every bar would clutter.
-    if (isPeak) {
-      body.push(
-        text(t, {
-          x: x + BAR_W / 2,
-          y: y - 8,
-          content: num(week.count),
-          size: 12,
-          weight: 700,
-          fill: t.accent,
-          anchor: "middle",
-          mono: true,
-          cls: "rise",
-        })
       );
     }
 
@@ -694,6 +657,13 @@ const rendered = [];
 for (const [name, render] of Object.entries(PANELS)) {
   for (const theme of THEMES) {
     const svg = render(theme);
+    // Last line of defence: no "@" may reach a public panel outside the
+    // stylesheet (@keyframes, @media). Handles and addresses are never shown.
+    const visible = svg.replace(/<style>[\s\S]*?<\/style>/g, "");
+    if (visible.includes("@")) {
+      console.error(`${name}-${theme.name}.svg contains "@" — refusing to publish`);
+      process.exit(1);
+    }
     const file = join(ASSETS, `${name}-${theme.name}.svg`);
     writeFileSync(file, `${svg}\n`);
     rendered.push(svg);

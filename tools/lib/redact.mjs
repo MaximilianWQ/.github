@@ -22,6 +22,9 @@ const DENY = [
   { name: "ipv6", re: /\b(?:[0-9a-f]{0,4}:){3,}[0-9a-f]{0,4}\b/i, joined: true },
   { name: "url", re: /\b(?:https?|ftp|ssh|git):\/\//i, joined: true },
   { name: "email", re: /\b[\w.+-]+@[\w-]+\.[\w.-]+\b/, joined: true },
+  // Anything addressed with "@": Telegram/GitHub handles, bot usernames,
+  // mentions. Account names are never published, whatever they look like.
+  { name: "handle", re: /\S*@\S*/u, joined: true },
   // Hostnames: a dotted name whose FINAL label is a real TLD. Matching on the
   // TLD rather than on "is dotted" is what keeps code vocabulary readable —
   // `res.on(close)` and `pyproject.toml` survive, `morbit.work` does not.

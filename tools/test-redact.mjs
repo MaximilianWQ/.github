@@ -38,6 +38,9 @@ const LEAKS = [
   "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
   "connect to 10.0.0.7:5432 from the bastion",
   "-----BEGIN RSA PRIVATE KEY----- committed by mistake",
+  "Elma: main product bot is @elma_vbot",
+  "notify @support_team_bot on escalation",
+  "ping @Max about release",
 ];
 
 let failures = 0;
@@ -66,6 +69,9 @@ const SECRETS = [
   ["пароль администратора изменён на Qwerty123", "Qwerty123"],
   ["чинил ноду FR-1 62T16M38bUA3", "62T16M38bUA3"],
   ["add token ghp_AbCdEf0123456789AbCdEf0123456789AbCd", "ghp_"],
+  ["Elma: main product bot is @elma_vbot", "elma_vbot"],
+  ["notify @support_team_bot on escalation", "@"],
+  ["ping @Max about release", "Max"],
 ];
 
 for (const [subject, secret] of SECRETS) {

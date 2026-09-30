@@ -1,9 +1,9 @@
-// Shared SVG primitives for the Platinum Cockpit panels.
+// Shared SVG primitives for the Liquid Glass panels.
 //
-// DEPTH RECIPE (from the aesthetic's recipe, §3): depth comes from a hairline
-// border plus an inset top light-lift, never from glow or heavy shadow. SVG has
-// no inset box-shadow, so the lift is drawn explicitly as a 1px light line
-// inset one pixel from the top edge of every raised surface.
+// DEPTH RECIPE: translucent white bodies over a coloured aurora, a specular rim
+// that fades from top to bottom, and a highlight streak along the upper edge.
+// SVG in <img> has no backdrop-filter, so the "frost" is simulated by the
+// aurora being soft enough to read as already blurred.
 
 import { alpha, FONT_MONO, FONT_SANS } from "./theme.mjs";
 import { esc, measure, measureMono } from "./text.mjs";
@@ -63,60 +63,121 @@ export function styles(t) {
   }`;
 }
 
-/**
- * Film grain. Kills the flat digital wash on large near-black fields and is the
- * cheapest "material" signal available inside a self-contained SVG.
- */
-export function grainDef(id) {
-  return `<filter id="${id}" x="0" y="0" width="100%" height="100%">
-    <feTurbulence type="fractalNoise" baseFrequency="0.82" numOctaves="3" stitchTiles="stitch"/>
-    <feColorMatrix type="saturate" values="0"/>
-  </filter>`;
+// The document-wide accent gradient (ice → blue), registered by panel() so
+// every tick and bar in the same SVG can reference it.
+let accentGrad = null;
+
+/** Fill for accent marks: the shared gradient when a panel defined one. */
+export function accentFill(t) {
+  return accentGrad ? `url(#${accentGrad})` : t.accent;
 }
 
-/** The panel shell: rounded bg, hairline, top light-lift, grain, one soft wash. */
-export function panel(t, height, { wash = true } = {}) {
-  const grain = nextId("grain");
-  const washId = nextId("wash");
+/** A vertical white gradient, used for glass bodies and specular rims. */
+function whiteRamp(id, top, bottom, color = "#ffffff") {
+  return `<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="${color}" stop-opacity="${top}"/>
+    <stop offset="100%" stop-color="${color}" stop-opacity="${bottom}"/>
+  </linearGradient>`;
+}
 
-  const washDef = wash
-    ? `<radialGradient id="${washId}" cx="14%" cy="0%" r="62%">
-         <stop offset="0%" stop-color="${t.accent}" stop-opacity="${t.name === "dark" ? 0.07 : 0.05}"/>
-         <stop offset="100%" stop-color="${t.accent}" stop-opacity="0"/>
-       </radialGradient>`
+/** A horizontal highlight that peaks mid-way: the specular streak on a glass edge. */
+function streak(id, peak) {
+  return `<linearGradient id="${id}" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
+    <stop offset="35%" stop-color="#ffffff" stop-opacity="${peak}"/>
+    <stop offset="70%" stop-color="#ffffff" stop-opacity="${peak * 0.35}"/>
+    <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+  </linearGradient>`;
+}
+
+/**
+ * The panel shell — LIQUID GLASS.
+ * Ink canvas, an aurora of three soft radial blobs, a translucent glass body,
+ * a specular rim that is bright on top and fades down, and a streak of light
+ * along the upper edge.
+ */
+export function panel(t, height, { wash = true } = {}) {
+  const grad = nextId("accent");
+  const body = nextId("glass");
+  const rim = nextId("rim");
+  const spec = nextId("spec");
+  accentGrad = grad;
+
+  // Blob anchors (cx, cy, r) in bounding-box units. They are spread so every
+  // panel, tall or short, catches colour at a corner and one edge.
+  const spots = [
+    [0.08, 0.0, 0.55],
+    [0.95, 0.15, 0.5],
+    [0.55, 1.15, 0.6],
+  ];
+  const blobIds = spots.map(() => nextId("aurora"));
+  const blobDefs = wash
+    ? spots
+        .map(([cx, cy, r], i) => {
+          const [color, op] = t.aurora[i];
+          return `<radialGradient id="${blobIds[i]}" cx="${cx}" cy="${cy}" r="${r}">
+            <stop offset="0%" stop-color="${color}" stop-opacity="${op}"/>
+            <stop offset="55%" stop-color="${color}" stop-opacity="${op * 0.35}"/>
+            <stop offset="100%" stop-color="${color}" stop-opacity="0"/>
+          </radialGradient>`;
+        })
+        .join("")
     : "";
 
+  const defs =
+    `<linearGradient id="${grad}" x1="0" y1="0" x2="1" y2="1">
+       <stop offset="0%" stop-color="${t.accent}"/>
+       <stop offset="100%" stop-color="${t.accentDim}"/>
+     </linearGradient>` +
+    blobDefs +
+    whiteRamp(body, t.glass[0] * 0.6, t.glass[1] * 0.4) +
+    whiteRamp(rim, t.rim[0] * 0.7, t.rim[1] * 0.5) +
+    streak(spec, t.specular * 0.8);
+
+  const R = RADIUS + 4;
   return {
-    defs: `${grainDef(grain)}${washDef}`,
+    defs,
     body:
-      `<rect width="${PANEL_W}" height="${height}" rx="${RADIUS}" fill="${t.bg}"/>` +
-      (wash
-        ? `<rect width="${PANEL_W}" height="${height}" rx="${RADIUS}" fill="url(#${washId})"/>`
-        : "") +
-      `<rect width="${PANEL_W}" height="${height}" rx="${RADIUS}" filter="url(#${grain})" ` +
-      `opacity="${t.name === "dark" ? 0.05 : 0.035}" style="mix-blend-mode:overlay"/>` +
-      `<rect x=".5" y=".5" width="${PANEL_W - 1}" height="${height - 1}" rx="${RADIUS - 0.5}" ` +
+      `<rect width="${PANEL_W}" height="${height}" rx="${R}" fill="${t.bg}"/>` +
+      (wash ? blobIds.map((id) => `<rect width="${PANEL_W}" height="${height}" rx="${R}" fill="url(#${id})"/>`).join("") : "") +
+      `<rect width="${PANEL_W}" height="${height}" rx="${R}" fill="url(#${body})"/>` +
+      `<rect x=".5" y=".5" width="${PANEL_W - 1}" height="${height - 1}" rx="${R - 0.5}" ` +
       `fill="none" stroke="${alpha(t.line, t.lineOpacity)}"/>` +
-      `<path d="M${RADIUS} 1.5 H${PANEL_W - RADIUS}" stroke="${alpha(t.line, t.liftOpacity * 1.6)}" ` +
-      `stroke-width="1" fill="none"/>`,
+      `<rect x=".5" y=".5" width="${PANEL_W - 1}" height="${height - 1}" rx="${R - 0.5}" ` +
+      `fill="none" stroke="url(#${rim})"/>` +
+      `<path d="M${R} 1 H${PANEL_W - R}" stroke="url(#${spec})" stroke-width="1.2" fill="none"/>`,
   };
 }
 
-/** A raised card: gradient fill, hairline, top light-lift. */
+/** A glass card: translucent body, specular rim, top highlight streak. */
 export function card(t, x, y, w, h) {
-  const g = nextId("cardfill");
+  const body = nextId("cardglass");
+  const rim = nextId("cardrim");
+  const spec = nextId("cardspec");
+  const R = 14;
   return {
-    defs: `<linearGradient id="${g}" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="${t.surface2}"/>
-      <stop offset="100%" stop-color="${t.surface1}"/>
-    </linearGradient>`,
+    defs: whiteRamp(body, t.glass[0], t.glass[1]) + whiteRamp(rim, t.rim[0], t.rim[1]) + streak(spec, t.specular),
     body:
-      `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="url(#${g})"/>` +
-      `<rect x="${x + 0.5}" y="${y + 0.5}" width="${w - 1}" height="${h - 1}" rx="11.5" ` +
-      `fill="none" stroke="${alpha(t.line, t.lineOpacity)}"/>` +
-      `<path d="M${x + 12} ${y + 1.5} H${x + w - 12}" stroke="${alpha(t.line, t.liftOpacity * 2)}" ` +
-      `stroke-width="1" fill="none"/>`,
+      `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${R}" fill="url(#${body})"/>` +
+      `<rect x="${x + 0.5}" y="${y + 0.5}" width="${w - 1}" height="${h - 1}" rx="${R - 0.5}" ` +
+      `fill="none" stroke="${alpha(t.line, t.lineSoftOpacity)}"/>` +
+      `<rect x="${x + 0.5}" y="${y + 0.5}" width="${w - 1}" height="${h - 1}" rx="${R - 0.5}" ` +
+      `fill="none" stroke="url(#${rim})"/>` +
+      `<path d="M${x + R} ${y + 1} H${x + w - R}" stroke="url(#${spec})" stroke-width="1" fill="none"/>`,
   };
+}
+
+/** A small glass pill with a glowing status dot, e.g. "активен". */
+export function pill(t, { x, y, label, anchor = "end" }) {
+  const w = measure(label.toUpperCase(), 8.5, 700) * 1.45 + 30;
+  const left = anchor === "end" ? x - w : x;
+  return (
+    `<rect x="${left}" y="${y}" width="${w}" height="20" rx="10" fill="${alpha(t.accent, 0.12)}" ` +
+    `stroke="${alpha(t.accent, 0.35)}"/>` +
+    `<circle cx="${left + 11}" cy="${y + 10}" r="3" fill="${t.accent}"/>` +
+    `<circle cx="${left + 11}" cy="${y + 10}" r="5.5" fill="${t.accent}" opacity=".22"/>` +
+    text(t, { x: left + 19, y: y + 13.5, content: label.toUpperCase(), size: 8.5, weight: 700, fill: t.accent, tracking: "0.12em" })
+  );
 }
 
 /**
@@ -126,7 +187,7 @@ export function card(t, x, y, w, h) {
  * rather than assembled.
  */
 export function tick(t, x, y, h = 16, color = null) {
-  return `<rect x="${x}" y="${y}" width="2" height="${h}" rx="1" fill="${color || t.accent}"/>`;
+  return `<rect x="${x}" y="${y}" width="2.5" height="${h}" rx="1.25" fill="${color || accentFill(t)}"/>`;
 }
 
 /**
