@@ -63,6 +63,20 @@ export function styles(t) {
   }`;
 }
 
+/**
+ * Film grain — the "matte" in frosted glass. Kills the flat digital wash and
+ * is the cheapest material signal available inside a self-contained SVG.
+ */
+export function grainDef(id) {
+  return `<filter id="${id}" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+  </filter>`;
+}
+
+// One grain filter per document, shared by the panel and its cards.
+let grainId = null;
+
 // The document-wide accent gradient (ice → blue), registered by panel() so
 // every tick and bar in the same SVG can reference it.
 let accentGrad = null;
@@ -101,7 +115,9 @@ export function panel(t, height, { wash = true } = {}) {
   const body = nextId("glass");
   const rim = nextId("rim");
   const spec = nextId("spec");
+  const grain = nextId("grain");
   accentGrad = grad;
+  grainId = grain;
 
   // Blob anchors (cx, cy, r) in bounding-box units. They are spread so every
   // panel, tall or short, catches colour at a corner and one edge.
@@ -125,6 +141,7 @@ export function panel(t, height, { wash = true } = {}) {
     : "";
 
   const defs =
+    grainDef(grain) +
     `<linearGradient id="${grad}" x1="0" y1="0" x2="1" y2="1">
        <stop offset="0%" stop-color="${t.accent}"/>
        <stop offset="100%" stop-color="${t.accentDim}"/>
@@ -141,6 +158,8 @@ export function panel(t, height, { wash = true } = {}) {
       `<rect width="${PANEL_W}" height="${height}" rx="${R}" fill="${t.bg}"/>` +
       (wash ? blobIds.map((id) => `<rect width="${PANEL_W}" height="${height}" rx="${R}" fill="url(#${id})"/>`).join("") : "") +
       `<rect width="${PANEL_W}" height="${height}" rx="${R}" fill="url(#${body})"/>` +
+      `<rect width="${PANEL_W}" height="${height}" rx="${R}" filter="url(#${grain})" ` +
+      `opacity="${t.grain}" style="mix-blend-mode:overlay"/>` +
       `<rect x=".5" y=".5" width="${PANEL_W - 1}" height="${height - 1}" rx="${R - 0.5}" ` +
       `fill="none" stroke="${alpha(t.line, t.lineOpacity)}"/>` +
       `<rect x=".5" y=".5" width="${PANEL_W - 1}" height="${height - 1}" rx="${R - 0.5}" ` +
@@ -159,6 +178,10 @@ export function card(t, x, y, w, h) {
     defs: whiteRamp(body, t.glass[0], t.glass[1]) + whiteRamp(rim, t.rim[0], t.rim[1]) + streak(spec, t.specular),
     body:
       `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${R}" fill="url(#${body})"/>` +
+      (grainId
+        ? `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${R}" filter="url(#${grainId})" ` +
+          `opacity="${t.grain * 0.8}" style="mix-blend-mode:overlay"/>`
+        : "") +
       `<rect x="${x + 0.5}" y="${y + 0.5}" width="${w - 1}" height="${h - 1}" rx="${R - 0.5}" ` +
       `fill="none" stroke="${alpha(t.line, t.lineSoftOpacity)}"/>` +
       `<rect x="${x + 0.5}" y="${y + 0.5}" width="${w - 1}" height="${h - 1}" rx="${R - 0.5}" ` +

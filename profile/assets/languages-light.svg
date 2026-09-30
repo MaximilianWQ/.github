@@ -27,30 +27,33 @@
     .sheen { animation: none; opacity: 0; }
     .rise, .slide, .bar, .fill, .spark { animation: none; opacity: 1; transform: none;
                                          stroke-dashoffset: 0; }
-  }</style><defs><linearGradient id="accent1" x1="0" y1="0" x2="1" y2="1">
-       <stop offset="0%" stop-color="#0071e0"/>
-       <stop offset="100%" stop-color="#00a7c4"/>
-     </linearGradient><radialGradient id="aurora5" cx="0.08" cy="0" r="0.55">
-            <stop offset="0%" stop-color="#61d7ed" stop-opacity="0.55"/>
-            <stop offset="55%" stop-color="#61d7ed" stop-opacity="0.1925"/>
-            <stop offset="100%" stop-color="#61d7ed" stop-opacity="0"/>
-          </radialGradient><radialGradient id="aurora6" cx="0.95" cy="0.15" r="0.5">
-            <stop offset="0%" stop-color="#6badff" stop-opacity="0.4"/>
-            <stop offset="55%" stop-color="#6badff" stop-opacity="0.13999999999999999"/>
-            <stop offset="100%" stop-color="#6badff" stop-opacity="0"/>
-          </radialGradient><radialGradient id="aurora7" cx="0.55" cy="1.15" r="0.6">
-            <stop offset="0%" stop-color="#bda6ff" stop-opacity="0.35"/>
-            <stop offset="55%" stop-color="#bda6ff" stop-opacity="0.12249999999999998"/>
-            <stop offset="100%" stop-color="#bda6ff" stop-opacity="0"/>
+  }</style><defs><filter id="grain5" x="0" y="0" width="100%" height="100%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+  </filter><linearGradient id="accent1" x1="0" y1="0" x2="1" y2="1">
+       <stop offset="0%" stop-color="#a67f3b"/>
+       <stop offset="100%" stop-color="#c8a56c"/>
+     </linearGradient><radialGradient id="aurora6" cx="0.08" cy="0" r="0.55">
+            <stop offset="0%" stop-color="#e7c99a" stop-opacity="0.28"/>
+            <stop offset="55%" stop-color="#e7c99a" stop-opacity="0.098"/>
+            <stop offset="100%" stop-color="#e7c99a" stop-opacity="0"/>
+          </radialGradient><radialGradient id="aurora7" cx="0.95" cy="0.15" r="0.5">
+            <stop offset="0%" stop-color="#ccccdb" stop-opacity="0.45"/>
+            <stop offset="55%" stop-color="#ccccdb" stop-opacity="0.1575"/>
+            <stop offset="100%" stop-color="#ccccdb" stop-opacity="0"/>
+          </radialGradient><radialGradient id="aurora8" cx="0.55" cy="1.15" r="0.6">
+            <stop offset="0%" stop-color="#ead4b3" stop-opacity="0.2"/>
+            <stop offset="55%" stop-color="#ead4b3" stop-opacity="0.06999999999999999"/>
+            <stop offset="100%" stop-color="#ead4b3" stop-opacity="0"/>
           </radialGradient><linearGradient id="glass2" x1="0" y1="0" x2="0" y2="1">
-    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.44999999999999996"/>
-    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.168"/>
+    <stop offset="0%" stop-color="#ffffff" stop-opacity="0.42"/>
+    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.16000000000000003"/>
   </linearGradient><linearGradient id="rim3" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0%" stop-color="#ffffff" stop-opacity="0.7"/>
-    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.175"/>
+    <stop offset="100%" stop-color="#ffffff" stop-opacity="0.15"/>
   </linearGradient><linearGradient id="spec4" x1="0" y1="0" x2="1" y2="0">
     <stop offset="0%" stop-color="#ffffff" stop-opacity="0"/>
-    <stop offset="35%" stop-color="#ffffff" stop-opacity="0.8"/>
-    <stop offset="70%" stop-color="#ffffff" stop-opacity="0.27999999999999997"/>
+    <stop offset="35%" stop-color="#ffffff" stop-opacity="0.7200000000000001"/>
+    <stop offset="70%" stop-color="#ffffff" stop-opacity="0.252"/>
     <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
-  </linearGradient><clipPath id="barclip8"><rect x="28" y="86" width="824" height="16" rx="8"/></clipPath></defs><rect width="880" height="170" rx="20" fill="#f2f6fb"/><rect width="880" height="170" rx="20" fill="url(#aurora5)"/><rect width="880" height="170" rx="20" fill="url(#aurora6)"/><rect width="880" height="170" rx="20" fill="url(#aurora7)"/><rect width="880" height="170" rx="20" fill="url(#glass2)"/><rect x=".5" y=".5" width="879" height="169" rx="19.5" fill="none" stroke="rgba(10,16,36,0.1)"/><rect x=".5" y=".5" width="879" height="169" rx="19.5" fill="none" stroke="url(#rim3)"/><path d="M20 1 H860" stroke="url(#spec4)" stroke-width="1.2" fill="none"/><rect x="28" y="35" width="2.5" height="13" rx="1.25" fill="url(#accent1)"/><text x="40" y="46" font-size="12" font-weight="700" fill="#353d4d" letter-spacing="0.13em">ЯЗЫКИ</text><text x="852" y="46" font-size="9.5" font-weight="600" fill="#818a99" text-anchor="end" letter-spacing="0.11em">ПО ОБЪЁМУ КОДА · 8 РЕПОЗИТОРИЕВ</text><path d="M28 62.5 H852" stroke="rgba(10,16,36,0.06)" stroke-width="1"/><g clip-path="url(#barclip8)"><g class="fill"><rect x="28.00" y="86" width="395.43" height="16" fill="#3178c6"/><rect x="422.68" y="86" width="1.5" height="16" fill="#f2f6fb" opacity=".85"/><rect x="423.43" y="86" width="381.66" height="16" fill="#3572A5"/><rect x="804.33" y="86" width="1.5" height="16" fill="#f2f6fb" opacity=".85"/><rect x="805.08" y="86" width="34.66" height="16" fill="#663399"/><rect x="838.99" y="86" width="1.5" height="16" fill="#f2f6fb" opacity=".85"/><rect x="839.74" y="86" width="12.26" height="16" fill="#818a99"/><rect x="851.25" y="86" width="1.5" height="16" fill="#f2f6fb" opacity=".85"/></g></g><rect x="28.5" y="86.5" width="823" height="15" rx="7.5" fill="none" stroke="rgba(10,16,36,0.1)"/><g class="rise" opacity="1" style=" animation-delay:0.200s;"><rect x="28" y="127" width="3" height="12" rx="1.5" fill="#3178c6"/><text x="40" y="136" font-size="12.5" font-weight="500" fill="#353d4d">TypeScript</text><text x="40" y="151" font-size="11" font-weight="400" fill="#818a99" class="mono">48.0%</text></g><g class="rise" opacity="1" style=" animation-delay:0.240s;"><rect x="234" y="127" width="3" height="12" rx="1.5" fill="#3572A5"/><text x="246" y="136" font-size="12.5" font-weight="500" fill="#353d4d">Python</text><text x="246" y="151" font-size="11" font-weight="400" fill="#818a99" class="mono">46.3%</text></g><g class="rise" opacity="1" style=" animation-delay:0.280s;"><rect x="440" y="127" width="3" height="12" rx="1.5" fill="#663399"/><text x="452" y="136" font-size="12.5" font-weight="500" fill="#353d4d">CSS</text><text x="452" y="151" font-size="11" font-weight="400" fill="#818a99" class="mono">4.2%</text></g><g class="rise" opacity="1" style=" animation-delay:0.320s;"><rect x="646" y="127" width="3" height="12" rx="1.5" fill="#818a99"/><text x="658" y="136" font-size="12.5" font-weight="500" fill="#353d4d">прочее</text><text x="658" y="151" font-size="11" font-weight="400" fill="#818a99" class="mono">1.5%</text></g></svg>
+  </linearGradient><clipPath id="barclip9"><rect x="28" y="86" width="824" height="16" rx="8"/></clipPath></defs><rect width="880" height="170" rx="20" fill="#f3f3f5"/><rect width="880" height="170" rx="20" fill="url(#aurora6)"/><rect width="880" height="170" rx="20" fill="url(#aurora7)"/><rect width="880" height="170" rx="20" fill="url(#aurora8)"/><rect width="880" height="170" rx="20" fill="url(#glass2)"/><rect width="880" height="170" rx="20" filter="url(#grain5)" opacity="0.06" style="mix-blend-mode:overlay"/><rect x=".5" y=".5" width="879" height="169" rx="19.5" fill="none" stroke="rgba(10,10,12,0.14)"/><rect x=".5" y=".5" width="879" height="169" rx="19.5" fill="none" stroke="url(#rim3)"/><path d="M20 1 H860" stroke="url(#spec4)" stroke-width="1.2" fill="none"/><rect x="28" y="35" width="2.5" height="13" rx="1.25" fill="url(#accent1)"/><text x="40" y="46" font-size="12" font-weight="700" fill="#47474e" letter-spacing="0.13em">ЯЗЫКИ</text><text x="852" y="46" font-size="9.5" font-weight="600" fill="#97989e" text-anchor="end" letter-spacing="0.11em">ПО ОБЪЁМУ КОДА · 8 РЕПОЗИТОРИЕВ</text><path d="M28 62.5 H852" stroke="rgba(10,10,12,0.07)" stroke-width="1"/><g clip-path="url(#barclip9)"><g class="fill"><rect x="28.00" y="86" width="395.43" height="16" fill="#3178c6"/><rect x="422.68" y="86" width="1.5" height="16" fill="#f3f3f5" opacity=".85"/><rect x="423.43" y="86" width="381.65" height="16" fill="#3572A5"/><rect x="804.33" y="86" width="1.5" height="16" fill="#f3f3f5" opacity=".85"/><rect x="805.08" y="86" width="34.66" height="16" fill="#663399"/><rect x="838.99" y="86" width="1.5" height="16" fill="#f3f3f5" opacity=".85"/><rect x="839.74" y="86" width="12.26" height="16" fill="#97989e"/><rect x="851.25" y="86" width="1.5" height="16" fill="#f3f3f5" opacity=".85"/></g></g><rect x="28.5" y="86.5" width="823" height="15" rx="7.5" fill="none" stroke="rgba(10,10,12,0.14)"/><g class="rise" opacity="1" style=" animation-delay:0.200s;"><rect x="28" y="127" width="3" height="12" rx="1.5" fill="#3178c6"/><text x="40" y="136" font-size="12.5" font-weight="500" fill="#47474e">TypeScript</text><text x="40" y="151" font-size="11" font-weight="400" fill="#97989e" class="mono">48.0%</text></g><g class="rise" opacity="1" style=" animation-delay:0.240s;"><rect x="234" y="127" width="3" height="12" rx="1.5" fill="#3572A5"/><text x="246" y="136" font-size="12.5" font-weight="500" fill="#47474e">Python</text><text x="246" y="151" font-size="11" font-weight="400" fill="#97989e" class="mono">46.3%</text></g><g class="rise" opacity="1" style=" animation-delay:0.280s;"><rect x="440" y="127" width="3" height="12" rx="1.5" fill="#663399"/><text x="452" y="136" font-size="12.5" font-weight="500" fill="#47474e">CSS</text><text x="452" y="151" font-size="11" font-weight="400" fill="#97989e" class="mono">4.2%</text></g><g class="rise" opacity="1" style=" animation-delay:0.320s;"><rect x="646" y="127" width="3" height="12" rx="1.5" fill="#97989e"/><text x="658" y="136" font-size="12.5" font-weight="500" fill="#47474e">прочее</text><text x="658" y="151" font-size="11" font-weight="400" fill="#97989e" class="mono">1.5%</text></g></svg>
