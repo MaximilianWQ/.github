@@ -1,33 +1,33 @@
 <div align="center">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/banner-dark.svg?v=a9f4c4b9">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/banner-light.svg?v=a9f4c4b9">
-  <img alt="Novikov — веб-сервисы, корпоративные системы и автоматизация" src="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/banner-dark.svg?v=a9f4c4b9" width="880">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/banner-dark.svg?v=9a17f0fa">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/banner-light.svg?v=9a17f0fa">
+  <img alt="Novikov — веб-сервисы, корпоративные системы и автоматизация" src="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/banner-dark.svg?v=9a17f0fa" width="880">
 </picture>
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/repos-dark.svg?v=a9f4c4b9">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/repos-light.svg?v=a9f4c4b9">
-  <img alt="Главные проекты по активности за последние 30 дней" src="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/repos-dark.svg?v=a9f4c4b9" width="880">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/repos-dark.svg?v=9a17f0fa">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/repos-light.svg?v=9a17f0fa">
+  <img alt="Главные проекты по активности за последние 30 дней" src="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/repos-dark.svg?v=9a17f0fa" width="880">
 </picture>
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/activity-dark.svg?v=a9f4c4b9">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/activity-light.svg?v=a9f4c4b9">
-  <img alt="Последние коммиты по всем репозиториям" src="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/activity-dark.svg?v=a9f4c4b9" width="880">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/activity-dark.svg?v=9a17f0fa">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/activity-light.svg?v=9a17f0fa">
+  <img alt="Последние коммиты по всем репозиториям" src="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/activity-dark.svg?v=9a17f0fa" width="880">
 </picture>
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/pulse-dark.svg?v=a9f4c4b9">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/pulse-light.svg?v=a9f4c4b9">
-  <img alt="Пульс разработки — коммиты по неделям за 12 недель" src="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/pulse-dark.svg?v=a9f4c4b9" width="880">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/pulse-dark.svg?v=9a17f0fa">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/pulse-light.svg?v=9a17f0fa">
+  <img alt="Пульс разработки — коммиты по неделям за 12 недель" src="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/pulse-dark.svg?v=9a17f0fa" width="880">
 </picture>
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/languages-dark.svg?v=a9f4c4b9">
-  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/languages-light.svg?v=a9f4c4b9">
-  <img alt="Языки по объёму кода во всех репозиториях" src="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/languages-dark.svg?v=a9f4c4b9" width="880">
+  <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/languages-dark.svg?v=9a17f0fa">
+  <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/languages-light.svg?v=9a17f0fa">
+  <img alt="Языки по объёму кода во всех репозиториях" src="https://raw.githubusercontent.com/MaximilianWQ/.github/main/profile/assets/languages-dark.svg?v=9a17f0fa" width="880">
 </picture>
 
 <br>
